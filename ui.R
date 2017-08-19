@@ -12,8 +12,11 @@ library(leaflet)
 shinyUI(fluidPage(
   
     br(),
-    column(8,leafletOutput("map", height="600px")),
-    column(4,br(),br(),br(),br(),plotOutput("plot", height="300px")),
+    column(4,leafletOutput("map2", height="300px"),
+           br(),
+    leafletOutput("map3", height="300px")),
+
+    column(8, leafletOutput("map1", height="620px")),
     br()
     
     
