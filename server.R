@@ -10,16 +10,20 @@ library(shiny)
 library(leaflet)
 
 shinyServer(function(input, output) {
+  
+  RV<-reactiveValues(Clicks=list())
+  
 
   # build data with 2 places
   data=data.frame(x=c(130, 128), y=c(-22,-26), id=c("place1", "place2"))
   
   # create a reactive value that will store the click position
-  data_of_click <- reactiveValues(clickedMarker=NULL)
   
   # Leaflet map with 2 markers
   source("./R/leaflet_1.R")
-  output$map1 <- renderLeaflet({
+
+  
+  output$map <- renderLeaflet({
     mymap1
   })
   
@@ -31,6 +35,72 @@ shinyServer(function(input, output) {
     mymap3
   })
   
+  
+  
+  
+  observeEvent(input$map_shape_click, {
+    
+    #create object for clicked polygon
+    click <- input$map_shape_click
+    RV$Clicks<-c(RV$Clicks,click$id)
+
+  }) #END OBSERVE EVENT
+  
+  observeEvent(input$map2_shape_click, {
+    
+    #create object for clicked polygon
+    click <- input$map2_shape_click
+    RV$Clicks<-c(RV$Clicks,click$id)
+
+  }) #END OBSERVE EVENT
+  
+  observeEvent(input$map3_shape_click, {
+    
+    #create object for clicked polygon
+    click <- input$map3_shape_click
+    RV$Clicks<-c(RV$Clicks,click$id)
+
+    
+  }) #END OBSERVE EVENT
+  
+  output$plot_ed = renderPlot({
+    x <- makeRateBar(unlist(RV$Clicks))
+    if(dim(x)[1]>0) {
+    barplot(x$`E.D. Rate`, horiz = TRUE, names = x$State, las=1,
+            main= "Emergency Dept.", xlim=c(0,1),
+            col="#0039A6")
+    }
+  })
+  
+  output$plot_uc = renderPlot({
+    x <- makeRateBar(unlist(RV$Clicks))
+    if(dim(x)[1]>0) {
+    barplot(x$`U.C. Rate`, horiz = TRUE, names = x$State, las=1,
+            main= "Urgent Care", xlim=c(0,1),
+            col="#4971F2")
+    }
+  })
+  
+  
+  output$plot_or = renderPlot({
+    x <- makeRateBar(unlist(RV$Clicks))
+    if(dim(x)[1]>0) {
+    barplot(x$`Outpatient Rate`, horiz = TRUE, names = x$State, las=1,
+            main= "Outpatient Care", xlim=c(0,1),
+            col = "#007D57")
+    }
+  })
+  
+  
+  output$plot_ratio = renderPlot({
+    x <- makeRateBar(unlist(RV$Clicks))
+    if(dim(x)[1]>0) {
+      barplot(x$Ratio, horiz = TRUE, names = x$State, las=1,
+            main= "Ratio", xlim=c(0,1),
+            col = "#9A3B26")
+    }
+  })
+
 })
 
 

@@ -10,14 +10,23 @@ library(leaflet)
 
 
 shinyUI(fluidPage(
-  
+  fluidRow(  
     br(),
     column(4,leafletOutput("map2", height="300px"),
            br(),
     leafletOutput("map3", height="300px")),
 
-    column(8, leafletOutput("map1", height="620px")),
+    column(8, leafletOutput("map", height="620px")),
     br()
+  ),
+  
+  fluidRow(
+    column(3, plotOutput("plot_ed", height="300px")),
+    column(3, plotOutput("plot_uc", height="300px")),
+    column(3, plotOutput("plot_or", height="300px")),
+    column(3, plotOutput("plot_ratio", height="300px"))
+    
+  )
     
     
   ))
