@@ -39,27 +39,67 @@ shinyServer(function(input, output) {
     
     #create object for clicked polygon
     click <- input$map_shape_click
-    
-    if(click$id %in% RV$Clicks){
-      RV$Clicks <- RV$Clicks[!RV$Clicks %in% click$id]
+
+    if(gsub("x$", "", click$id) %in% RV$Clicks){
+      leafletProxy("map") %>% removeShape(as.character(click$id))
+      leafletProxy("map2") %>% removeShape(as.character(click$id))
+      leafletProxy("map3") %>% removeShape(as.character(click$id))
+      
+      RV$Clicks <- RV$Clicks[!RV$Clicks %in% gsub("x$", "", click$id)]
       
 
          }else{
            RV$Clicks<-c(RV$Clicks,click$id)
          
-    leafletProxy("map") %>%
-      addPolygons(data = subset(states, NAME %in% RV$Clicks), 
+    
+      leafletProxy("map") %>%
+      addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
                   stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      leafletProxy("map2") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      leafletProxy("map3") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+    
+    
          }
     
 
   }) #END OBSERVE EVENT
   
   observeEvent(input$map2_shape_click, {
-    
     #create object for clicked polygon
     click <- input$map2_shape_click
-    RV$Clicks<-c(RV$Clicks,click$id)
+    
+    if(gsub("x$", "", click$id) %in% RV$Clicks){
+      leafletProxy("map") %>% removeShape(as.character(click$id))
+      leafletProxy("map2") %>% removeShape(as.character(click$id))
+      leafletProxy("map3") %>% removeShape(as.character(click$id))
+      
+      RV$Clicks <- RV$Clicks[!RV$Clicks %in% gsub("x$", "", click$id)]
+      
+      
+    }else{
+      RV$Clicks<-c(RV$Clicks,click$id)
+      
+      
+      leafletProxy("map") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      leafletProxy("map2") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      leafletProxy("map3") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      
+    }
 
   }) #END OBSERVE EVENT
   
@@ -67,8 +107,34 @@ shinyServer(function(input, output) {
     
     #create object for clicked polygon
     click <- input$map3_shape_click
-    RV$Clicks<-c(RV$Clicks,click$id)
-
+    
+    if(gsub("x$", "", click$id) %in% RV$Clicks){
+      leafletProxy("map") %>% removeShape(as.character(click$id))
+      leafletProxy("map2") %>% removeShape(as.character(click$id))
+      leafletProxy("map3") %>% removeShape(as.character(click$id))
+      
+      RV$Clicks <- RV$Clicks[!RV$Clicks %in% gsub("x$", "", click$id)]
+      
+      
+    }else{
+      RV$Clicks<-c(RV$Clicks,click$id)
+      
+      
+      leafletProxy("map") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      leafletProxy("map2") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      leafletProxy("map3") %>%
+        addPolygons(layerId = paste0(as.character(click$id),"x"), data = subset(states, NAME == click$id), 
+                    stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+      
+      
+    }
+    
     
   }) #END OBSERVE EVENT
   
