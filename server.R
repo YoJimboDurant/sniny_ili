@@ -11,7 +11,7 @@ library(leaflet)
 
 shinyServer(function(input, output) {
   
-  RV<-reactiveValues(Clicks=list())
+  RV <- reactiveValues(Clicks=list())
   
 
   # build data with 2 places

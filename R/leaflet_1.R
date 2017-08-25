@@ -79,3 +79,4 @@ makeRateBar <- function(clicked_states = c("Wyoming", "Montana", "Alaska")){
   dfx[order(dfx$State, decreasing = TRUE),]
 
 }
+
