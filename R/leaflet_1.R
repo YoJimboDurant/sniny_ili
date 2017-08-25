@@ -80,3 +80,8 @@ makeRateBar <- function(clicked_states = c("Wyoming", "Montana", "Alaska")){
 
 }
 
+RV <- NULL
+RV$Clicks <- c("Wyoming", "Montana", "Alaska")
+mymap1 %>% addPolygons(data = subset(states, NAME %in% RV$Clicks), 
+                       stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+

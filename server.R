@@ -11,18 +11,15 @@ library(leaflet)
 
 shinyServer(function(input, output) {
   
-  RV <- reactiveValues(Clicks=list())
-  
 
-  # build data with 2 places
-  data=data.frame(x=c(130, 128), y=c(-22,-26), id=c("place1", "place2"))
-  
-  # create a reactive value that will store the click position
-  
+  RV <- reactiveValues(Clicks=list())
+
+
+
+
   # Leaflet map with 2 markers
   source("./R/leaflet_1.R")
 
-  
   output$map <- renderLeaflet({
     mymap1
   })
@@ -36,13 +33,25 @@ shinyServer(function(input, output) {
   })
   
   
-  
+
   
   observeEvent(input$map_shape_click, {
     
     #create object for clicked polygon
     click <- input$map_shape_click
-    RV$Clicks<-c(RV$Clicks,click$id)
+    
+    if(click$id %in% RV$Clicks){
+      RV$Clicks <- RV$Clicks[!RV$Clicks %in% click$id]
+      
+
+         }else{
+           RV$Clicks<-c(RV$Clicks,click$id)
+         
+    leafletProxy("map") %>%
+      addPolygons(data = subset(states, NAME %in% RV$Clicks), 
+                  stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
+         }
+    
 
   }) #END OBSERVE EVENT
   
@@ -100,6 +109,8 @@ shinyServer(function(input, output) {
             col = "#9A3B26")
     }
   })
+  
+
 
 })
 
