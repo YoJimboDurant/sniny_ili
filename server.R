@@ -32,7 +32,7 @@ shinyServer(function(input, output) {
   })
   
   
-  
+
   
   observeEvent(input$map_shape_click, {
     
@@ -40,10 +40,15 @@ shinyServer(function(input, output) {
     click <- input$map_shape_click
     
     if(click$id %in% RV$Clicks){
-      RV$Clicks <- RV$Clicks[!RV$Clicks %in% click$id] 
+      RV$Clicks <- RV$Clicks[!RV$Clicks %in% click$id]
+      
 
          }else{
            RV$Clicks<-c(RV$Clicks,click$id)
+         
+    leafletProxy("map") %>%
+      addPolygons(data = subset(states, NAME %in% RV$Clicks), 
+                  stroke = T, fillOpacity = 0.5,highlightOptions = highlightOptions(color = "white", weight = 2,bringToFront = TRUE))
          }
     
 
